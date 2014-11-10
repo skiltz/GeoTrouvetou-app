@@ -1,0 +1,23 @@
+<div class="row">
+  <h1 class="page-header">
+  Liste des communes {{head_subtext}}
+  </h1>
+  <div class="list container" when-scrolled="loadMore()">
+    <div class="commune row" ng-repeat="i in items" ng-class="{'strike' : i.dateDel  }">
+      <a href ui-sref="voies({insee: i.insee })" title="{{i.beautifullName}}">
+      <div class="{{i.css}}">
+        <span class="codePostal col-md-2">{{i.codePostal}}</span>
+        <span class="col-md-1">
+        <i ng-show="{{i.rurale}}" class="fa fa-tree text-success "></i>
+        <i ng-show="{{i.dateDel}}" class="fa fa-times-circle text-danger"></i>
+        </span>
+        <span class="name col-md-5">{{i.beautifullName}}</span>
+        <span class="date col-md-4">
+        {{i.date | date : 'dd/MM/yy'}}
+        <span ng-show="{{i.dateDel}}"> <i class="fa fa-arrow-circle-right"></i> <span class="date">{{i.dateDel | date: 'dd/MM/yy'}}</span></span>
+        </span>
+      </div>
+      </a>
+    </div>
+  </div>
+</div>

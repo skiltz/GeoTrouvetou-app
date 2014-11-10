@@ -1,0 +1,79 @@
+    <div class="row">
+  
+  <div class="jumbo">
+    <h1 class="page-header">
+      Edition {{head_subtext}}
+    </h1>
+    <div class="voie" ng-show="type === 'voie'">
+      <div>
+        <p>
+          <a href="#" editable-select="voie.natureVoie" onbeforesave="update({field:'natureVoie',value:$data});" e-ng-options="v for v in typeVoies">
+            {{ voie.natureVoie || "vide"  }}
+          </a>
+          <a href="#" editable-text="voie.fullClean" onbeforesave="update({field:'fullClean',value:$data});" class="name">{{ voie.fullClean || "vide" }}</a>
+          <a href="#" ng-show="voie.natureVoie === 'Lieu dit'" onbeforesave="update({field:'bati',value:$data});" editable-checkbox="voie.bati" e-title="BATI?">
+            {{ voie.bati && "Il y a des bâtiments" || "Il n'y a pas de bâtiments" }}
+          </a>
+        </p>
+        <p>
+          <span class = "date">{{voie.fullClean}} existe depuis le {{voie.date}}<span ng-show="!voie.dateDel">.</span><span ng-show="voie.dateDel"> et à été supprimé le {{voie.dateDel}}.</span></span>
+          
+          
+        </p>
+        <p>
+          <span ng-show="voie.commune" class="name">{{voie.fullClean}}</span>
+          <span ng-show="voie.commune"> est sur la commune de {{voie.commune.fullClean}}</span>
+          <span ng-show="voie.commune.codePostal"> ({{voie.commune.codePostal}})</span>
+          <span ng-show="voie.commune">.</span>
+        </p>
+        <p>
+          <span ng-show="updated">Mis à jour!</span>
+        </p>
+        <p ng-show="cadastre">
+          <a href="{{cadastre}}">
+          Visualiser <span ng-show="voie.commune" class="name">{{voie.fullClean}}</span> sur le Cadastre.
+          </a>
+        </p>
+        <!--
+        <span class="col-md-2  {{i.css}}">
+          <i ng-show="{{i.bati}}" class="fa fa-home text-success "></i>
+          <i ng-show="{{i.natureVoie == 'Lieu dit'}}" class="fa fa-map-marker text-warning "></i>
+          <i ng-show="{{i.dateDel}}" class="fa fa-times-circle text-danger"></i>
+          <i ng-show="{{i.natureVoie == 'Voie provisoire'}}" class="fa fa-eye-slash text-danger "></i>
+          <i ng-show="{{i.natureVoie == 'Ensemble immobilier' || i.natureVoie == 'Cité '}}" class="fa fa-building text-info "></i>
+          
+        </span> 
+        <span class="name col-md-8 {{i.css}}">{{i.beautifullName}}</span> 
+        <span class="date col-md-2 {{i.css}}">{{i.date}}</span>
+        !-->
+      </div>
+    </div> 
+    <div class="commune" ng-show="type === 'commune'">
+      <div>
+        <p>
+          
+          <a href="#" editable-text="commune.fullClean" onbeforesave="update({field:'fullClean',value:$data});" class="name">{{ commune.fullClean || "vide" }}</a>
+          
+        </p>
+        <p>
+          <span class = "date">{{commune.fullClean}} existe depuis le <a  href="#" editable-text="commune.date" onbeforesave="update({field:'date',value:$data});" class="date">{{commune.date}}</a><span ng-show="!commune.dateDel">.</span><span ng-show="commune.dateDel"> et à été supprimé le <a  href="#" editable-text="commune.dateDel" onbeforesave="update({field:'dateDel',value:$data});" class="date">{{commune.dateDel}}</a>.</span></span>
+          
+          
+        </p>
+        <p>
+          <span > Code Postal :<a href="#" editable-text="commune.codePostal" onbeforesave="update({field:'codePostal',value:$data});" class="name">{{commune.codePostal}}</a></span>
+         
+        </p>
+        <p>
+          <span ng-show="updated">Mis à jour!</span>
+        </p>
+       
+      </div>
+    </div> 
+  </div>
+  <div class ="map print" ng-show="havePlan"><leaflet bounds="bounds" center="center" defaults="defaults"></leaflet></div>
+  <p ng-show="havePlan" id="coordonnes" class="print-only text-right">
+    Coordonnées GPS du centre de la carte Lat: {{center.lat}}, Lon: {{center.lng}}
+  </p>
+</div>
+

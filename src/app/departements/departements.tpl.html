@@ -1,0 +1,14 @@
+<div class="row">
+  <h1 class="page-header">
+    Liste des départements
+  </h1>
+  <div class="list container" when-scrolled="loadMore()">
+    <div class="departement row" ng-repeat="i in items">
+      <a href ng-click="click(i.departement);">
+        <span class="departement col-md-2">{{i.departement}}</span>
+        <span class"name col-md-6">{{i.name}}</span>
+      </a>
+    </div>
+</div>
+</div>
+

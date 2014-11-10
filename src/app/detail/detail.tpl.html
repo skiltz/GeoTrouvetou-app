@@ -1,0 +1,41 @@
+<div class="row">
+  
+  <div class="jumbo">
+    <h1 class="page-header no-print">
+      Détail {{head_subtext}}
+    </h1>
+    <div class="voie">
+      <div>
+        <p class="no-print">
+          <span class="name">{{voie.beautifullName}}</span> est référencées sous la référence FANTOIR <span class="FANTOIR">{{voie.id}}</span>.
+          <span ng-show="{{voie.natureVoie == 'Lieu dit' || i.natureVoie == 'Ensemble immobilier'}}"> est un {{voie.natureVoie}}.</span>
+          <span ng-show="{{i.natureVoie == 'Cité ' || i.natureVoie == 'Voie provisoire'}}"> est une {{voie.natureVoie}}.</span>
+          <span ng-show="{{ i.typeVoie == 'Voie provisoire'}}"> est une {{voie.typeVoie}}.</span>
+        </p>
+        <p class="no-print">
+          <span class = "date">{{voie.beautifullName}} existe depuis le {{voie.date | date : 'EEEE d MMMM y'}}<span ng-show="!voie.dateDel">.</span><span ng-show="voie.dateDel"> et à été supprimé le {{voie.dateDel | date : 'EEEE d MMMM y'}}.</span></span>
+        </p>
+        <p class="print">
+          <span ng-show="voie.commune" class="name">{{voie.beautifullName}}</span>
+          <span ng-show="voie.commune"> est sur la commune de {{voie.commune.beautifullName}}</span>
+          <span ng-show="voie.commune.codePostal"> ({{voie.commune.codePostal}})</span><span ng-show="voie.commune">.</span>
+        </p>
+        <p >
+          <a ng-show="cadastre" target="_blank" class="btn btn-info no-print"href="{{cadastre}}">
+          Visualiser sur le Cadastre.
+          </a>
+          <a ng-show="osmLink" target="_blank" class="btn btn-success no-print"href="{{osmLink}}">
+            Visualiser sur OpenStreetMap
+          </a>
+          
+        </p>
+      </div>
+    </div> 
+
+  </div>
+  <div class ="map print" ng-show="havePlan"><leaflet bounds="bounds" layers="layers" center="center" defaults="defaults"></leaflet></div>
+  <p ng-show="havePlan" id="coordonnes" class="print-only text-right">
+    Coordonnées GPS du centre de la carte Lat: {{center.lat}}, Lon: {{center.lng}}
+  </p>
+</div>
+

@@ -1,0 +1,125 @@
+<div class="row">
+  <div ng-show="!resultat" class="recherche">
+    <h1 class="page-header">
+    Recherche
+    </h1>
+    <form ng-show="!avance" ng-submit="cherche()" name="recherche">
+      <div class="row">
+        <div ng-class="{'has-error' : recherche.voie.$invalid}" class="form-group col-sm-12 " >
+          <label class="" for="voie">Nom de la voie:</label>
+          <input class="form-control" type="text" placeholder="" ng-model="voie" name="voie" ng-minlength="3" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-4">
+          <label class="" for="cp">Code Postal :</label>
+          <input class="form-control" type="text" name="cp" ng-model="cp" placeholder="00000" ng-change="getCommune()">
+        </div>
+        <div class="form-group col-sm-8">
+          <label class="" for="commune">Commune :</label>
+          <input class="form-control" type="text" name="commune" ng-model="commune" placeholder="" >
+          <ul class="animate-repeat-container" ng-show="communes && (communes.length > 0)">
+            <li ng-repeat="item in communes" class="animate-repeat searchCommune" ng-click="changeCommune(item)">{{item}}</li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <div class="row">
+        
+        <a class="btn btn-info btn-lg" ng-class="{avance : active}" ng-click="avance=!avance">
+        Recherche avancée
+        </a>
+        <a class="btn btn-primary btn-lg" type="submit" ng-click="cherche()">
+        Rechercher!
+        </a>
+      </div>
+    </form>
+    <form ng-show="avance" ng-submit="cherche()" name="recherche">
+      <div class="row">
+        <div ng-class="{'has-error' : recherche.voie.$invalid}" class="form-group col-sm-12 " >
+          <label class="" for="voie">Nom de la voie:</label>
+          <input class="form-control" type="text" placeholder="" ng-model="voie" name="voie" ng-minlength="3" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-4">
+          <label class="" for="cp">Code Postal :</label>
+          <input class="form-control" type="text" name="cp" ng-model="cp" placeholder="00000" ng-change="getCommune()">
+        </div>
+        <div class="form-group col-sm-8">
+          <label class="" for="commune">Commune :</label>
+          <input class="form-control" type="text" name="commune" ng-model="commune" placeholder="" >
+          <ul class="animate-repeat-container" ng-show="communes && (communes.length > 0)">
+            <li ng-repeat="item in communes" class="animate-repeat searchCommune" ng-click="changeCommune(item)">{{item}}</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Filtres:</h2>
+          <span>
+        Inactifs : <select ng-model="filters.dateDel" ng-options="option for option in optionsFilters"></select>
+        </span>
+        <span>
+        Type de voie : <select ng-model="filters.typeVoie" ng-options="option for option in typeVoies"><option value="">-- Tous --</option></select> <span ng-show="filters.typeVoie">(uniquement).</span>
+        </span>
+        <span ng-show="!filters.typeVoie">
+        Inclure les Lieux dits : <input type="checkbox" ng-model="filters.lieuxDits" >
+        </span>
+      </div>
+    </div>
+    
+    <div class="row">
+      
+      <a class="btn btn-info btn-lg" ng-class="{avance : active}" ng-click="avance=!avance">
+      Recherche avancée
+      </a>
+      
+      <a class="btn btn-primary btn-lg" type="submit" ng-click="cherche()">
+      Rechercher!
+      </a>
+    </div>
+  </form>
+</div>
+<div class="resultats" ng-show="resultat">
+  <h1 class="page-header">
+  Resultats :
+  </h1>
+  <p>
+  Résultats pour la recherche : {{voie}} {{cp}} {{commune}}
+  </p>
+  <div class="jumbotron" ng-show="list.length == 0">
+    <p ng-show="wait === false">
+    <i class="fa  fa-frown-o"></i>Pas de résultats.
+    </p>
+    <button ng-show="wait === false" class="btn btn-info btn-lg" ng-click="resultat = !resultat">
+    Nouvelle recherche
+    </button>
+    <p ng-show="wait === true">
+    <i class="fa fa-spin fa-refresh"></i> Recherche en cour.
+    </p>
+  </div>
+  <div ng-show="list.length != 0" class="jumbotron">
+    <div class="list container " when-scrolled="cherche()">
+      <div class="voie row" ng-repeat="i in list" ng-class="{'strike' : i.dateDel  }">
+        <span class="score col-md-1"><small>{{i.score}}</small></span>
+        <a href ui-sref="detail({'id':i.id})" >
+        <span class="col-md-1  {{i.css}}">
+        <i ng-show="{{i.bati}}" class="fa fa-home text-success "></i>
+        <i ng-show="{{i.natureVoie == 'Lieu dit'}}" class="fa fa-map-marker text-warning "></i>
+        <i ng-show="{{i.dateDel}}" class="fa fa-times-circle text-danger"></i>
+        <i ng-show="{{i.natureVoie == 'Voie provisoire'}}" class="fa fa-eye-slash text-danger "></i>
+        <i ng-show="{{i.natureVoie == 'Ensemble immobilier' || i.natureVoie == 'Cité '}}" class="fa fa-building text-info "></i>
+        </span>
+        <span class="name col-md-6 {{i.css}}">{{i.beautifullName}}</span>
+        <span class="codePostal col-md-1 {{i.css}}">{{i.commune.codePostal}}</span>
+        <span class="date col-md-3 {{i.css}}">{{i.commune.beautifullName}}</span>
+        </a>
+      </div>
+    </div>
+    <div class="">
+      <br/>
+      <button class="btn btn-info btn-lg"ng-click="resultat = !resultat;counter=0;list= [];scroll_id=null;">Nouvelle recherche</button>
+    </div>
+  </div>
+</div>
+</div>

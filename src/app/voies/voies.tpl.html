@@ -1,0 +1,38 @@
+<div class="row">
+  <h1 class="page-header">
+    Liste des voies {{head_subtext}}
+  </h1>
+  <div class="list container" when-scrolled="loadMore()">
+    <!--<div class="voie row">
+      <a >
+        <span class="col-md-2" >
+        <i class="fa fa-home text-success" ></i>
+          <i class="fa fa-map-marker text-warning "></i>
+          <i class="fa fa-times-circle text-danger"></i>
+          <i class="fa fa-eye-slash text-danger "></i>
+          <i class="fa fa-building text-info "></i>
+        </span>
+      </a>
+    </div> -->
+    <div class="voie row" ng-repeat="i in items" ng-class="{'strike' : i.dateDel  }">
+      <a href ui-sref="detail({'id':i.id})" >
+        <span class="col-md-2" >
+          <i ng-show="{{i.bati}}" class="fa fa-home text-success" ></i>
+          <i ng-show="{{i.natureVoie == 'Lieu dit'}}" class="fa fa-map-marker text-warning "></i>
+          <i ng-show="{{i.dateDel}}" class="fa fa-times-circle text-danger"></i>
+          <i ng-show="{{i.typeVoie == 'Voie provisoire'}}" class="fa fa-eye-slash text-danger "></i>
+          <i ng-show="{{i.typeVoie == 'Ensemble immobilier' || i.natureVoie == 'Cité '}}" class="fa fa-building text-info "></i>
+        </span> 
+        <span class="name col-md-7" >
+          {{i.beautifullName}}
+        </span> 
+        <span class="date col-md-3">
+          {{i.date  | date : 'dd/MM/yy'}}
+          <span ng-show="{{i.dateDel}}"><i class="fa fa-arrow-circle-right"></i> <span class="date">{{i.dateDel | date : 'dd/MM/yy'}}</span></span>
+        </span>
+      </div>
+    </div> 
+  </div>
+  <i ng-show="wait" class="fa fa-refresh"></i>
+</div>
+

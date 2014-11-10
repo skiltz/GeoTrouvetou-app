@@ -1,0 +1,90 @@
+<div class="row">
+  <h1 class="page-header row">
+  <div class="col-md-3">
+    GeoTrouvetout<br/>
+    <small>Trouve toutes les rues et lieux dits.</small>
+  </div>
+  <img src="assets/geo-trouvetou.gif" class="col-md-2" style="height:100%;width:auto; margin-top: -7px;" alt="Logo"/>
+  </h1>
+  
+  <h2>Pourquoi cet outil?</h2>
+  <p>
+  J'ai commencé à chercher un moyen de préparer des cartes pour les livreurs
+  de nos tournées lorsque les adresses nettaient pas sur leur plans ou sur les GPS.
+  </p>
+  <p>
+  En juillet 2013, la <abbr title="Direction générale des Finances publiques">DGFiP</abbr> à libéré les données
+  du fichier national <abbr title="Fichier ANnuaire TOpographique Initialisé Réduit">FANTOIR</abbr>. rescensant toutes les voies des communes françaises.
+  </p>
+  <h2>Ce qu'il fait et ne fait pas.</h2>
+  <ul>
+    <li>Il permet:<ul>
+      <li>de faire des recherche dans la base FANTOIR, à laquelle j'ai ajouté quelques données.</li>
+      <li>d'éditer une carte <a href="openstreetmap.org" title="OSM">OpenStreetMap</a>.</li>
+      <li>de faire une visualistion du lieu sur le cadastre.</li>
+    </ul></li>
+    <li> Il ne fait pas:<ul>
+      <li>Une carte prête à l'emploi si la voie ou le lieu dit n'est pas dans la base de donnée
+        d'<a href="openstreetmap.org" title="OSM">OpenStreetMap</a> ou BANO.
+      Dans ce cas, il faut l'ajouter manuellement.</li>
+      <li>Le café</li>
+    </ul></li>
+  </ul>
+  <h1 class="page-header">
+  Comment cela fonctionne?
+  <small>Ou petit guide de survie.</small>
+  </h1>
+  <p>
+  Vous pouvez afficher la <a href ui-sref="departements"> liste des départements </a>, la liste des commune de votre département, mais aussi faire une <a href ui-sref="recherche">recherche d'une addresse</a>.
+  </p>
+  <p>
+  Vous pouvez également afficher la liste des rues et lieux dits d'une commune depuis la barre de recherche.
+  </p>
+  <h2>Liste des commune d'un département</h2>
+  <p>
+  De base, le logiciel précharge les 20 premières communes et charge la suite au fur et à mesure que l'on descent dans la liste.
+  </p>
+  
+  <div class="example">
+    <p>
+    Voici comment se présente la liste:
+    </p>
+    <div class="list commune">
+      <a href="#/voies/85001" title="L'Aiguillon-sur-Mer" class="row">
+      <div class="">
+        <span class="codePostal col-md-2 ng-binding">85460</span>
+        <span class="col-md-1">
+        <i ng-show="true" class="fa fa-tree text-success"></i>
+        <i ng-show="" class="fa fa-times-circle text-danger ng-hide"></i>
+        </span>
+        <span class="name col-md-5 ng-binding">L'Aiguillon-sur-Mer</span>
+        <span class="date col-md-4 ng-binding">01/01/87</span>
+      </div>
+      </a>
+      <a href="#/voies/85068" class ="row" title="LA CLAYE">
+      <div class="strike">
+        <span class="codePostal col-md-2 ng-binding"></span>
+        <span class="col-md-1">
+        <i ng-show="true" class="fa fa-tree text-success"></i>
+        <i ng-show="1999-12-22" class="fa fa-times-circle text-danger"></i>
+        </span>
+        <span class="name col-md-5 ng-binding">LA CLAYE</span>
+        <span class="date col-md-4 ng-binding">
+        01/01/87
+        <i class="fa fa-arrow-circle-right"></i><span class="date ng-binding">22/12/99</span>
+        </span>
+      </div>
+      </a>
+    </div>
+    <p>
+    Le premier élément est le code postal de la commune suivi par les icones
+    <i class="fa fa-tree text-success"></i> qui représente une commune rurale
+    et <i class="fa fa-times-circle text-danger"></i> qui représente une commune n'existant plus.
+    </p>
+    <p>
+    Viens ensuite son nom puis la date d'ajout dans la base suivi de <a><i class="fa fa-arrow-circle-right"></i></a> puis la date de suppression.
+    Vous aurez remarqué que la ville supprimée de la base est rayée <i class="fa fa-smile-o"></i>.
+    </p>
+  </div>
+  
+</div>

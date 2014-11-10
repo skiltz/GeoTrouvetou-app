@@ -1,0 +1,44 @@
+<div class="row">
+  
+  <div class="jumbo">
+    <h1 class="page-header">
+      Détail {{head_subtext}}
+    </h1>
+    <div class="voie">
+      <div>
+        <p>
+          <span class="name">{{voie.beautifullName}}</span> est référencées sous la référence FANTOIR <span class="FANTOIR">{{voie.id}}</span>.
+          <span ng-show="{{voie.natureVoie == 'Lieu dit' || i.natureVoie == 'Ensemble immobilier'}}"> est un {{voie.natureVoie}}.</span>
+          <span ng-show="{{i.natureVoie == 'Cité ' || i.natureVoie == 'Voie provisoire '}}"> est une {{voie.natureVoie}}.</span>
+        </p>
+        <p>
+          <span class = "date">{{voie.beautifullName}} existe depuis le {{voie.date}}<span ng-show="!voie.dateDel">.</span><span ng-show="voie.dateDel"> et à été supprimé le {{voie.dateDel}}.</span></span>
+        </p>
+        <p>
+          <span ng-show="voie.commune" class="name">{{voie.beautifullName}}</span>
+          <span ng-show="voie.commune"> est sur la commune de {{voie.commune.beautifullName}}</span>
+          <span ng-show="voie.commune.codePostal"> ({{voie.commune.codePostal}})</span><span ng-show="voie.commune">.</span>
+        </p>
+        <p ng-show="cadastre">
+          <a target="_blank" href="{{cadastre}}">
+          Visualiser <span ng-show="voie.commune" class="name">{{voie.beautifullName}}</span> sur le Cadastre.
+          </a>
+        </p>
+        <!--
+        <span class="col-md-2  {{i.css}}">
+          <i ng-show="{{i.bati}}" class="fa fa-home text-success "></i>
+          <i ng-show="{{i.natureVoie == 'Lieu dit'}}" class="fa fa-map-marker text-warning "></i>
+          <i ng-show="{{i.dateDel}}" class="fa fa-times-circle text-danger"></i>
+          <i ng-show="{{i.natureVoie == 'Voie provisoire'}}" class="fa fa-eye-slash text-danger "></i>
+          <i ng-show="{{i.natureVoie == 'Ensemble immobilier' || i.natureVoie == 'Cité '}}" class="fa fa-building text-info "></i>
+          
+        </span> 
+        <span class="name col-md-8 {{i.css}}">{{i.beautifullName}}</span> 
+        <span class="date col-md-2 {{i.css}}">{{i.date}}</span>
+        !-->
+      </div>
+    </div> 
+  </div>
+  <div class ="map"  ng-show="havePlan"><leaflet maxbounds="maxbounds" defaults="defaults"></leaflet></div>
+</div>
+

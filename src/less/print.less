@@ -1,0 +1,42 @@
+.print-only{
+  display : none;
+}
+
+@media print {
+@page {
+  size: A4 landscape;
+  margin:5%;
+}
+.SearchCtrl , .footer , .no-print{
+  display:none !important;
+}
+.print-only, .print{
+  display : block;
+}
+.map{
+  margin : 0;
+  width: 27cm;
+  height: 17cm;
+  display : block;
+  position:absolute;
+  top:1cm;
+  left:0.5cm;
+}
+#coordonnes{
+  position:absolute;
+  top: 18.5cm;
+  right:0.5cm;
+}
+button{
+  display:none !important;
+}
+a{
+  text-decoration: none;
+}
+a[href]:after {
+   content: "";
+}
+img { 
+  image-resolution: 300dpi 
+}
+}

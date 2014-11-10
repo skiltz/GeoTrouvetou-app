@@ -1,0 +1,50 @@
+<div class="row">
+  <h1 class="page-header">
+  Administration
+  </h1>
+  <div class="row">
+    <h2>
+    MAJ BANO
+    </h2>
+    <input type="file" multiple ng-file-select="onFileSelectBano($files)" >
+    <div ng-file-drop="onFileSelectBano($files)" class="drop-box"
+    ng-show="dropSupported">Déposez les fichier ici.</div>
+    <div ng-file-drop-available="dropSupported=true"
+    ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+    <progressbar ng-show="bano_progress_total !== 0" class="progress-striped active" max="100" value="( bano_progress_value * 100 ) / bano_progress_total">
+    <span style="color:black; white-space:nowrap;">
+    {{bano_progress_value}} / {{bano_progress_total}}
+    </span>
+    </progressbar>
+  </div>
+  <div class="row">
+    <h2>
+    Mise à jour des noms de voies / communes depuis BANO
+    </h2>
+    <input type="file" multiple ng-file-select="onFileSelectBano2Fantoir($files)" >
+    <div ng-file-drop="onFileSelectBano2Fantoir($files)" class="drop-box"
+    ng-show="dropSupported">Déposez les fichier ici.</div>
+    <div ng-file-drop-available="dropSupported=true"
+    ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+    <progressbar ng-show="bano2fantoir_progress_total !== 0" class="progress-striped active" max="100" value="( bano2fantoir_progress_value * 100 ) / bano2fantoir_progress_total">
+    <span style="color:black; white-space:nowrap;">
+    {{bano2fantoir_progress_value}} / {{bano2fantoir_progress_total}}
+    </span>
+    </progressbar>
+  </div>
+  <div class="row">
+    <h2>
+    Mise à jour de FANTOIR
+    </h2>
+    <input type="file" multiple ng-file-select="onFileSelectFantoir($files)" >
+    <div ng-file-drop="onFileSelectFantoir($files)" class="drop-box"
+    ng-show="dropSupported">Déposez les fichier ici.</div>
+    <div ng-file-drop-available="dropSupported=true"
+    ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+    <progressbar ng-show="fantoir_progress_total !== 0" class="progress-striped active" max="100" value="( fantoir_progress_value * 100 ) / fantoir_progress_total">
+    <span style="color:black; white-space:nowrap;">
+    {{fantoir_progress_value}} / {{fantoir_progress_total}}
+    </span>
+    </progressbar>
+  </div>
+</div>
