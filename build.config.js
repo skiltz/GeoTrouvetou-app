@@ -7,8 +7,8 @@ module.exports = {
    * development and the `compile_dir` folder is where our app resides once it's
    * completely built.
    */
-  build_dir: 'GeoTrouvetou/node/app/public',
-  compile_dir: 'GeoTrouvetou/node/app/public',
+  build_dir: 'build',
+  compile_dir: 'compiled',
 
   /**
    * This is a collection of file patterns that refer to our app code (the
