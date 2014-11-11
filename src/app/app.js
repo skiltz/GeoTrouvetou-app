@@ -14,6 +14,7 @@ angular.module('GeoTrouvetou', [
   'GeoTrouvetou.detail_bano',
   'GeoTrouvetou.admin',
   'GeoTrouvetou.maj',
+  'GeoTrouvetou.update',
   'GeoTrouvetou.stats',
   'ui.router',
   'ui.bootstrap',
@@ -23,13 +24,13 @@ angular.module('GeoTrouvetou', [
 ])
 
 .config(['$urlRouterProvider',
-    function myAppConfig($urlRouterProvider) {
-      "use strict";
-      $urlRouterProvider.otherwise('/acceuil');
-    }
-  ])
+  function myAppConfig($urlRouterProvider) {
+    "use strict";
+    $urlRouterProvider.otherwise('/acceuil');
+  }
+])
   .config(['$tooltipProvider',
-    function($tooltipProvider) {
+    function ($tooltipProvider) {
       $tooltipProvider.setTriggers({
         'mouseenter': 'mouseleave',
         'click': 'click',
@@ -40,18 +41,18 @@ angular.module('GeoTrouvetou', [
     }
   ])
   .controller('SearchCtrl', ['$scope', 'es', '$location', '$timeout',
-    function($scope, es, $location, $timeout) {
+    function ($scope, es, $location, $timeout) {
       "use strict";
-      $scope.submit = function(e) {
+      $scope.submit = function (e) {
         if (e.keyCode == 13) {
           $location.path('/voies/' + $scope.asyncSelected.payload.id);
         }
       };
-      $scope.getLocation = function(text) {
-        return es.suggest(text, 'commune').then(function(data, status) {
+      $scope.getLocation = function (text) {
+        return es.suggest(text, 'commune').then(function (data, status) {
           var communes = [];
           //        console.log(data);
-          angular.forEach(data.suggest[0].options, function(item) {
+          angular.forEach(data.suggest[0].options, function (item) {
             communes.push(item);
           });
           //        console.log(data);
@@ -67,7 +68,7 @@ angular.module('GeoTrouvetou', [
     $interval) {
     "use strict";
     //$scope.status = 'text-danger';
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams,
+    $scope.$on('$stateChangeSuccess', function (event, toState, toParams,
       fromState, fromParams) {
       if (angular.isDefined(toState.data.pageTitle)) {
         $scope.pageTitle = toState.data.pageTitle + ' | GéoTrouvetou';
@@ -81,27 +82,27 @@ angular.module('GeoTrouvetou', [
         sortOrder = -1;
         property = property.substr(1);
       }
-      return function(a, b) {
+      return function (a, b) {
         var result = (a[property] < b[property]) ? -1 : (a[property] > b[
           property]) ? 1 : 0;
         return result * sortOrder;
       };
     }
 
-    var openModalUpdate = function(size) {
+    var openModalUpdate = function (size) {
       var modalInstance = $modal.open({
         templateUrl: 'modals_update/modals_update.tpl.html',
         controller: 'modal_updateCtrl',
         resolve: {
-          nversion: function() {
+          nversion: function () {
             return $scope.nversion;
           }
         }
       });
 
-      modalInstance.result.then(function() {
+      modalInstance.result.then(function () {
 
-      }, function() {});
+      }, function () {});
     };
 
     // controle de mise à jour
@@ -135,16 +136,39 @@ angular.module('GeoTrouvetou', [
       qui suprimmera le dossier a updater, copiera les données dans le bon dossier et se suprrimera.
     */
 
-    var module_file = "package.json"; //"module.json";
-    $http.jsonp(
-      "https://api.github.com/repos/skiltz/geotrouvetou/contents/" + module_file + "?callback=JSON_CALLBACK").success(
-      function(data) {
-        var module = atob(data.data.content);
-        if ($scope.version == module.version) {
-          console.log('version à jour');
-        }
-      });
+    $http.get('/module/GeoTrouvetou').success(function (GeoTrouvetou_module) {
+      var my_version = GeoTrouvetou_module.version;
+      $http.get('/modules').success(function (
+        GeoTrouvetou_modules) {
+        $http.jsonp(GeoTrouvetou_modules.GeoTrouvetou.releases +
+          '?callback=JSON_CALLBACK').success(
+          function (releases) {
+            releases = releases.data.sort(dynamicSort("timestamp"));
+            var last_release = releases[0];
+            if (last_release.tag_name === my_version) {
+              console.log('Version à jour');
+            } else {
+              console.log('Nouvelle version: ' + last_release.tag_name);
 
+            }
+          });
+      });
+    });
+    /*
+    var modules_file = "modules.json"; //"module.json";
+    var module_file = "module.json"; //"module.json";
+    $http.jsonp(
+      "https://api.github.com/repos/skiltz/geotrouvetou/contents/" +
+      modules_file + "?callback=JSON_CALLBACK").success(
+      function (data) {
+        var modules = atob(data.data.content);
+        var my_modules = [];
+        angular.forEach(modules, function (v, k) {
+          my_modules.push(k); // xxx refactorisable!!!
+
+        });
+
+      });
 
 
     /*$http.jsonp("https://bitbucket.org/api/1.0/repositories/skiltz/geotrouvetou/tags?callback=JSON_CALLBACK").success(
@@ -176,13 +200,13 @@ angular.module('GeoTrouvetou', [
     $scope.databasePopMessage = '';
     $scope.databaseIsOn = false;
     var databaseIsOK;
-    databaseIsOK = function() {
-      return es.isOk().then(function(status, message) {
+    databaseIsOK = function () {
+      return es.isOk().then(function (status, message) {
         $scope.status = "bg-" + status;
         $scope.databaseIsOn = true;
         $scope.databasePopMessage = message;
         $timeout(databaseIsOK, 3000);
-      }, function(status, message) {
+      }, function (status, message) {
         $scope.databaseIsOn = false;
         $scope.databasePopMessage = message;
         $scope.status = "bg-" + status;
