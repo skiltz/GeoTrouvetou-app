@@ -72,7 +72,7 @@ angular.module('GeoTrouvetou.update', [
           "/contents/module.json?ref=" + version).success(function (data) {
           deferred.resolve(data.data);
         });
-        return defer.promise;
+        return deferred.promise;
       };
 
       var checkAll = function () {
