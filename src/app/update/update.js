@@ -27,12 +27,14 @@ angular.module('GeoTrouvetou.update', [
 ])
   .controller('updateCtrl', ['$scope', '$stateParams', 'geoTrouvetou', '$q',
     '$http', '$upload', 'moment', '$timeout',
-    function majCtrl($scope, $stateParams, geoTrouvetou, $q, $http, $upload,
-      moment, $timeout) {
+    function updateCtrl($scope, $stateParams, geoTrouvetou, $q, $http,
+      $upload, moment, $timeout) {
       "use strict";
       var getModule = function (module_name) {
         return $http.get('/module/' + module_name);
       };
+      $scope.modules = {};
+      $scope.dependencies = {};
 
       function dynamicSort(property) {
         var sortOrder = 1;
@@ -49,44 +51,103 @@ angular.module('GeoTrouvetou.update', [
 
       var getRelease = function (url, version) {
         var deferred = $q.defer();
-        version = version || 'master'; // in case I haven't version ^^
-        $http.jsonp(url + '?callback=JSON_CALLBACK').success(function (
-          releases) {
-          if (version) {
-            angular.forEach(releases.data, function (release) {
-              if (version === release.tag_name) {
-                deferred.resolve(release);
-              }
-            });
-          } else {
-            deferred.resolve(releases.data.sort(dynamicSort("timestamp"))[
-              0]);
-          }
-        });
+        $http.jsonp(url + '?callback=JSON_CALLBACK')
+          .success(function (releases) {
+            console.log('success');
+            if (version) {
+              angular.forEach(releases.data, function (release) {
+                if (version === release.tag_name) {
+                  deferred.resolve(release);
+                }
+              });
+            } else {
+              console.log(releases.data.sort(dynamicSort("timestamp"))[0]);
+              deferred.resolve(
+                releases.data.sort(dynamicSort("timestamp"))[0]
+              );
+            }
+          })
+          .error(function (e) {
+            deferred.reject(e);
+          });
         return deferred.promise;
       };
 
       var getNewModule = function (module, version) {
         var deferred = $q.defer();
-        $http.jsonp("https://api.github.com/repos/skiltz/" + module +
-          "/contents/module.json?ref=" + version).success(function (data) {
-          deferred.resolve(data.data);
-        });
+        version = version || 'master';
+        $http.jsonp(
+          "https://api.github.com/repos/skiltz/" + module +
+          "/contents/module.json?ref=" + version +
+          '&callback=JSON_CALLBACK'
+        )
+          .success(function (data) {
+            deferred.resolve(atob(data.data.content));
+          });
         return deferred.promise;
+      };
+      var getNewModules = function (version) {
+        var deferred = $q.defer();
+        version = version || 'master';
+        $http.jsonp(
+          "https://api.github.com/repos/skiltz/GeoTrouvetou/contents/modules.json?ref=" +
+          version +
+          '&callback=JSON_CALLBACK'
+        )
+          .success(function (data) {
+            deferred.resolve(atob(data.data.content));
+          });
+        return deferred.promise;
+      };
+
+      var updateModule = function (module, version) {
+        getNewModule(module, version).then(function (module_json) {
+          $scope.modules[module].nversion = module_json.version;
+          $scope.modules[module].dependencies = module_json.dependencies;
+          angular.forEach(module_json.dependencies, function (v, mod) {
+            if ($scope.dependencies[mod] !== v) { // xxx Need this test???
+              $scope.dependencies[mod] = v;
+            }
+          });
+          getRelease($scope.modules[module].releases, $scope.modules[
+            module].nversion).then(
+            function (release) {
+              console.log(release);
+              /* 
+              on récupère le lien du ZIP
+              On l'enregistre dans home_dir/Upgrade
+              On dezip
+              On remplace.
+              */
+            }
+          );
+        });
       };
 
       var checkAll = function () {
         // Get'in last revision of GeoTrouvetou
         $http.get('/modules').success(function (modules) {
-          getRelease(modules.GeoTrouvetou.releases).then(function (
-            release) {
-            //https://api.github.com/repos/skiltz/GeoTrouvetou/contents/module.json?ref=0.0.7
-            getNewModule('GeoTrouvetou', release.tag_name);
-
-            console.log(release);
-          });
+          $scope.modules = modules;
+          getRelease(modules.GeoTrouvetou.releases).then(
+            function (release) {
+              //https://api.github.com/repos/skiltz/GeoTrouvetou/contents/module.json?ref=0.0.7
+              //console.log(release);
+              getNewModules(release.tag_name).then(
+                function (modules) {
+                  angular.forEach(modules, function (v, k) {
+                    $scope.modules[k] = v;
+                  }).then(
+                    //update module GeoTrouvetou
+                    updateModule('GeoTrouvetou')
+                  );
+                });
+            },
+            function (e) {
+              console.log(e);
+            });
         });
       };
+
       checkAll();
     }
   ]);
