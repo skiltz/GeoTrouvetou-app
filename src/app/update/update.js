@@ -82,7 +82,7 @@ angular.module('GeoTrouvetou.update', [
           '&callback=JSON_CALLBACK'
         )
           .success(function (data) {
-            deferred.resolve(atob(data.data.content));
+            deferred.resolve(JSON.parse(atob(data.data.content)));
           });
         return deferred.promise;
       };
@@ -95,10 +95,11 @@ angular.module('GeoTrouvetou.update', [
           '&callback=JSON_CALLBACK'
         )
           .success(function (data) {
-            deferred.resolve(atob(data.data.content));
+            deferred.resolve(JSON.parse(atob(data.data.content)));
           });
         return deferred.promise;
       };
+      
 
       var updateModule = function (module, version) {
         getNewModule(module, version).then(function (module_json) {
@@ -112,11 +113,14 @@ angular.module('GeoTrouvetou.update', [
           getRelease($scope.modules[module].releases, $scope.modules[
             module].nversion).then(
             function (release) {
-              console.log(release);
+              console.log(release.zipball_url);
+              
+              //release.zipball_url
               /* 
               on récupère le lien du ZIP
               On l'enregistre dans home_dir/Upgrade
-              On dezip
+              
+              On dezip -> CF GeoTrouvetou
               On remplace.
               */
             }
@@ -134,12 +138,14 @@ angular.module('GeoTrouvetou.update', [
               //console.log(release);
               getNewModules(release.tag_name).then(
                 function (modules) {
+                  console.log('modules');
+                  console.log(modules);
                   angular.forEach(modules, function (v, k) {
                     $scope.modules[k] = v;
-                  }).then(
-                    //update module GeoTrouvetou
-                    updateModule('GeoTrouvetou')
-                  );
+                  });
+                  //update module GeoTrouvetou
+                  updateModule('GeoTrouvetou');
+                  
                 });
             },
             function (e) {

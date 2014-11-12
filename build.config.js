@@ -75,7 +75,8 @@ module.exports = {
       'vendor/angular-xeditable/dist/js/xeditable.js',
       'vendor/angular-file-upload/dist/angular-file-upload-shim.min.js',
       'vendor/angular-file-upload/dist/angular-file-upload.min.js',
-      'vendor/angular-indexedDB/src/indexeddb.js'
+      'vendor/angular-indexedDB/src/indexeddb.js',
+      'vendor/zip.js/WebContent/zip.js'
     ],
     css: [
       'vendor/angular-xeditable/dist/css/xeditable.css'
