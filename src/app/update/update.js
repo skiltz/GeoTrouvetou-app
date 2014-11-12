@@ -49,6 +49,7 @@ angular.module('GeoTrouvetou.update', [
 
       var getRelease = function (url, version) {
         var deferred = $q.defer();
+        version = version || 'master'; // in case I haven't version ^^
         $http.jsonp(url + '?callback=JSON_CALLBACK').success(function (
           releases) {
           if (version) {
@@ -62,7 +63,16 @@ angular.module('GeoTrouvetou.update', [
               0]);
           }
         });
-        return deferred.promise();
+        return deferred.promise;
+      };
+
+      var getNewModule = function (module, version) {
+        var deferred = $q.defer();
+        $http.jsonp("https://api.github.com/repos/skiltz/" + module +
+          "/contents/module.json?ref=" + version).success(function (data) {
+          deferred.resolve(data.data);
+        });
+        return defer.promise;
       };
 
       var checkAll = function () {
@@ -70,6 +80,9 @@ angular.module('GeoTrouvetou.update', [
         $http.get('/modules').success(function (modules) {
           getRelease(modules.GeoTrouvetou.releases).then(function (
             release) {
+            //https://api.github.com/repos/skiltz/GeoTrouvetou/contents/module.json?ref=0.0.7
+            getNewModule('GeoTrouvetou', release.tag_name);
+
             console.log(release);
           });
         });
