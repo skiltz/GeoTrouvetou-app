@@ -1,0 +1,14 @@
+{
+  "name": "zip.js",
+  "homepage": "https://github.com/gildas-lormeau/zip.js",
+  "_release": "87b9ffedee",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "87b9ffedee076517459a95acd483e440f1c88317"
+  },
+  "_source": "git://github.com/gildas-lormeau/zip.js.git",
+  "_target": "*",
+  "_originalSource": "zip.js",
+  "_direct": true
+}

@@ -9,6 +9,7 @@
     "angular-ui-router": "~0.2"
   },
   "dependencies": {
-    "elasticsearch": "~2.1.4"
+    "elasticsearch": "~2.1.4",
+    "zip.js": "*"
   }
 }
