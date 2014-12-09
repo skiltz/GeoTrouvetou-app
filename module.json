@@ -4,7 +4,7 @@
   "private": "true",
   "dependencies": {
     "GeoTrouvetou-server": "0.0.2",
-    "GeoTrouvetou-es": "1.40.0",
+    "GeoTrouvetou-es": "1.4.1",
     "GeoTrouvetou-chromium": "0.0.0"
   }
 }
